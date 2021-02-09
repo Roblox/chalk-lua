@@ -1,0 +1,4 @@
+/*.rbxmx
+Packages/*
+!Packages/.robloxrc
+rotriever.lock
