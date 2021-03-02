@@ -1,9 +1,9 @@
 [package]
-name = "roblox/lua-chalk"
+name = "roblox/chalk-lua"
 author = "Raymond Ng <rng@roblox.com>"
 license = "MIT"
 content_root = "src"
-version = "0.1.0"
+version = "0.1.1"
 
 [dev_dependencies]
 TestEZ = "github.com/roblox/testez@0.4.1"

@@ -1,4 +1,4 @@
-# Lua-Chalk
+# Chalk-Lua
 
 A Lua port of the open source JS terminal string styling library [Chalk](https://github.com/chalk/chalk).
 
@@ -10,7 +10,7 @@ A Lua port of the open source JS terminal string styling library [Chalk](https:/
 
 Add this package to your `[dependencies]` in your `rotriever.toml`.
 ```
-Chalk = "github.com/roblox/lua-chalk@0.1.0"
+Chalk = "github.com/roblox/chalk-lua@0.1.1"
 ```
 
 Run `rotrieve install` to install the package.
@@ -105,7 +105,7 @@ chalk.hex('#ff0000')('red')
 chalk.bgHex('#ff0000')('red')
 ```
 
-`chalk.level` specifies the level of color support. This can be set by setting `chalk.level` to a different value, for example, `chalk.level = 0` to disable color support. Note that this will affect all uses of `chalk` throughout the entire module. The default value is 2.
+`chalk.level` specifies the level of color support. This can be set by setting `chalk.level` to a different value, for example, `chalk.level = 0` to disable color support. Note that this will affect all uses of `chalk` throughout the entire module. The default value is 2. The flag `NOCOLOR` can be set with `--lua.globals=NOCOLOR=true` to set the default value to 0.
 | Level | Description |
 | :---: | :--- |
 | `0` | All colors disabled |

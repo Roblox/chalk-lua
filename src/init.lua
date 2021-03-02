@@ -92,6 +92,9 @@ local function compositeStyler(style, otherStyle)
 end
 
 local Chalk = { level = 2 }
+if _G.NOCOLOR then
+	Chalk.level = 0
+end
 setmetatable(
 	Chalk,
 	{
