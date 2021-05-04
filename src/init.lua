@@ -29,6 +29,7 @@ local ansiStyles = {
 		greenBright = {92, 39},
 		yellowBright = {93, 39},
 		blueBright = {94, 39},
+		magentaBright = {95, 39},
 		cyanBright = {96, 39},
 		whiteBright = {97, 39},
 	},
