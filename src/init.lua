@@ -92,10 +92,16 @@ local function compositeStyler(style, otherStyle)
 	)
 end
 
+local function foundProcessService()
+	local success = pcall(function() game:getService("ProcessService") end)
+	return success
+end
+
 local Chalk = { level = 2 }
-if _G.NOCOLOR then
+if _G.NOCOLOR or not foundProcessService() then
 	Chalk.level = 0
 end
+
 setmetatable(
 	Chalk,
 	{
