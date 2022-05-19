@@ -1,6 +1,8 @@
 [package]
-name = "roblox/chalk-lua"
-author = "Raymond Ng <rng@roblox.com>"
+name = "ChalkLua"
+authors = [
+    "Raymond Ng <rng@roblox.com>"
+]
 license = "MIT"
 content_root = "src"
 version = "0.1.3"
