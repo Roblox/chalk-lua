@@ -2,3 +2,10 @@
 Packages/*
 !Packages/.robloxrc
 rotriever.lock
+
+# Selene
+roblox.toml
+
+# Editor files
+.vscode/launch.json
+.idea
