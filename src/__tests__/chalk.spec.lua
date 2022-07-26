@@ -95,6 +95,20 @@ return function()
 		)
 	end)
 
+	it("reopens tags when encounters closing tag", function()
+		local TEXT1 = chalk.red("FIRST ")
+		local TEXT2 = TEXT1 .. " SECOND"
+		print(chalk.red(TEXT2))
+		expect(chalk.red(TEXT2)).to.equal(
+			string.format(
+				'%s%sFIRST %s%s SECOND%s',
+				ansi16(31), ansi16(31),
+				ansi16(39), ansi16(31),
+				ansi16(39)
+			)
+		)
+	end)
+
 	describe("aliases for gray", function()
 		local gray = chalk.gray('foo')
 		local bgGray = chalk.bgGray('foo')

@@ -1,3 +1,59 @@
+-- ROBLOX NOTE: copied stringSlice from LuauPolyfill's String.slice
+local function stringSlice(str: string, startIndexStr: string | number, lastIndexStr: (string | number)?): string
+	local strLen, invalidBytePosition = utf8.len(str)
+	assert(strLen ~= nil, ("string `%s` has an invalid byte at position %s"):format(str, tostring(invalidBytePosition)))
+	local startIndex = tonumber(startIndexStr)
+	assert(typeof(startIndex) == "number", "startIndexStr should be a number")
+
+	if startIndex + strLen < 0 then
+		-- then |start index| is greater than string length
+		startIndex = 1
+	end
+
+	if startIndex > strLen then
+		return ""
+	end
+
+	-- if no last index length set, go to str length + 1
+	local lastIndex = strLen + 1
+	if lastIndexStr ~= nil then
+		-- ROBLOX FIXME: add parseInt to encapsulate this logic and use it here
+		local NaN = 0 / 0
+		lastIndex = tonumber(lastIndexStr) or NaN -- this works because 0 is truthy in Lua
+	end
+	assert(typeof(lastIndex) == "number", "lastIndexStr should convert to number")
+
+	if lastIndex > strLen then
+		lastIndex = strLen + 1
+	end
+
+	local startIndexByte = utf8.offset(str, startIndex)
+	-- get char length of charset retunred at offset
+	local lastIndexByte = utf8.offset(str, lastIndex) - 1
+
+	return string.sub(str, startIndexByte, lastIndexByte)
+end
+
+-- ROBLOX NOTE: inline stringReplaceAll to keep ChalkLua as one file
+local function stringReplaceAll(string_, substring, replacer)
+	local index = string.find(string_, substring, 1, true)
+	if index == nil then
+			return string_
+	end
+	local substringLength = #substring
+	local endIndex = 1
+	local returnValue = ""
+	repeat
+			returnValue ..= stringSlice(string_, endIndex, index) .. substring .. replacer
+			endIndex = index + substringLength
+			index = string.find(string_, substring, endIndex, true)
+	until not (index ~= nil)
+	returnValue ..= stringSlice(string_, endIndex)
+	return returnValue
+
+end
+
+
 local ansiStyles = {
 	modifier = {
 		reset = {0, 0},
@@ -84,6 +140,7 @@ for groupName, group in pairs(ansiStyles) do
 end
 
 local createStyler
+local applyStyle
 
 local function compositeStyler(style, otherStyle)
 	return createStyler(
@@ -114,7 +171,7 @@ setmetatable(
 	}
 )
 
-createStyler = function(open, close)
+function createStyler(open, close)
 	local styler = {
 		open = open,
 		close = close
@@ -124,13 +181,7 @@ createStyler = function(open, close)
 		styler,
 		{
 			__call = function(self, str)
-				if str == nil or type(str) == 'string' and #str == 0 then
-					return ''
-				end
-				if Chalk.level == 0 then
-					return tostring(str)
-				end
-				return self.open .. tostring(str) .. self.close
+				return applyStyle(self, str)
 			end,
 			__concat = function(self, other)
 				return compositeStyler(self, other)
@@ -139,6 +190,28 @@ createStyler = function(open, close)
 	)
 
 	return styler
+end
+
+function applyStyle(self, str)
+	if str == nil or type(str) == 'string' and #str == 0 then
+		return ''
+	end
+	if Chalk.level == 0 then
+		return tostring(str)
+	end
+
+	local styler = self
+
+	if string.match(str, '\u{001B}') then
+		-- ROBLOX deviation START: no parent styles support yet
+		-- Replace any instances already present with a re-opening code
+		-- otherwise only the part of the string until said closing code
+		-- will be colored, and the rest will simply be 'plain'.
+		str = stringReplaceAll(str, styler.close, styler.open);
+		-- ROBLOX deviation END
+	end
+
+	return self.open .. tostring(str) .. self.close
 end
 
 local function noStyle()

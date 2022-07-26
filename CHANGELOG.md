@@ -1,5 +1,9 @@
 # ChalkLua Changelog
 
+## Not released
+
+* bugfix: replace any instances of closing code already present with a re-opening code
+
 ## 0.1.3
 * Sets chalk level to 0 automatically in Roblox Studio environment
 
