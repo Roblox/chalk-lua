@@ -159,7 +159,7 @@ return function()
 
 	it("should work across line breaks", function()
 		expect(chalk.red("hello\nworld")).to.equal(
-			string.format('%shello\nworld%s', ansi16(31), ansi16(39))
+			string.format('%shello%s\n%sworld%s', ansi16(31), ansi16(39), ansi16(31), ansi16(39))
 		)
 	end)
 

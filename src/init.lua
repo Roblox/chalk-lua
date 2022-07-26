@@ -14,8 +14,25 @@ local function stringReplaceAll(string_, substring, replacer)
 	until not (index ~= nil)
 	returnValue ..= string.sub(string_, endIndex)
 	return returnValue
-
 end
+
+-- ROBLOX NOTE: inline stringEncaseCRLFWithFirstIndex to keep ChalkLua as one file
+local function stringEncaseCRLFWithFirstIndex(string_, prefix, postfix, index)
+	local endIndex = 1
+	local returnValue = ""
+	repeat
+			local gotCR = string.sub(string_, index - 1, index -1) == "\r"
+			returnValue ..= string.sub(string_, endIndex, if gotCR then index - 2 else index - 1)
+				.. prefix
+				.. (if gotCR then "\r\n" else "\n")
+				.. postfix
+			endIndex = index + 1
+			index = string.find(string_, "\n", endIndex)
+	until not (index ~= nil)
+	returnValue ..= string.sub(string_, endIndex)
+	return returnValue
+end
+
 
 
 local ansiStyles = {
@@ -166,6 +183,7 @@ function applyStyle(self, str)
 
 	local styler = self
 
+	local openAll, closeAll = styler.open, styler.close
 	if string.match(str, '\u{001B}') then
 		-- ROBLOX deviation START: no parent styles support yet
 		-- Replace any instances already present with a re-opening code
@@ -173,6 +191,14 @@ function applyStyle(self, str)
 		-- will be colored, and the rest will simply be 'plain'.
 		str = stringReplaceAll(str, styler.close, styler.open);
 		-- ROBLOX deviation END
+	end
+
+	-- We can move both next actions out of loop, because remaining actions in loop won't have
+	-- any/visible effect on parts we add here. Close the styling before a linebreak and reopen
+	-- after next line to fix a bleed issue on macOS: https://github.com/chalk/chalk/pull/92
+	local lfIndex = string.find(str, '\n');
+	if lfIndex ~= nil then
+		str = stringEncaseCRLFWithFirstIndex(str, closeAll, openAll, lfIndex);
 	end
 
 	return self.open .. tostring(str) .. self.close
