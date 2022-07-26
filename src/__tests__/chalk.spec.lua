@@ -109,6 +109,20 @@ return function()
 		)
 	end)
 
+	it("reopens tags when encounters closing tag - works with unicode chars", function()
+		local TEXT1 = chalk.red("\u{25cf} FIRST ")
+		local TEXT2 = TEXT1 .. " \u{25cf} SECOND"
+		print(chalk.red(TEXT2))
+		expect(chalk.red(TEXT2)).to.equal(
+			string.format(
+				'%s%s\u{25cf} FIRST %s%s \u{25cf} SECOND%s',
+				ansi16(31), ansi16(31),
+				ansi16(39), ansi16(31),
+				ansi16(39)
+			)
+		)
+	end)
+
 	describe("aliases for gray", function()
 		local gray = chalk.gray('foo')
 		local bgGray = chalk.bgGray('foo')
