@@ -95,6 +95,32 @@ return function()
 		)
 	end)
 
+	it("reopens tags when encounters closing tag", function()
+		local TEXT1 = chalk.red("FIRST ")
+		local TEXT2 = TEXT1 .. " SECOND"
+		expect(chalk.red(TEXT2)).to.equal(
+			string.format(
+				'%s%sFIRST %s%s SECOND%s',
+				ansi16(31), ansi16(31),
+				ansi16(39), ansi16(31),
+				ansi16(39)
+			)
+		)
+	end)
+
+	it("reopens tags when encounters closing tag - works with unicode chars", function()
+		local TEXT1 = chalk.red("\u{25cf} FIRST ")
+		local TEXT2 = TEXT1 .. " \u{25cf} SECOND"
+		expect(chalk.red(TEXT2)).to.equal(
+			string.format(
+				'%s%s\u{25cf} FIRST %s%s \u{25cf} SECOND%s',
+				ansi16(31), ansi16(31),
+				ansi16(39), ansi16(31),
+				ansi16(39)
+			)
+		)
+	end)
+
 	describe("aliases for gray", function()
 		local gray = chalk.gray('foo')
 		local bgGray = chalk.bgGray('foo')
@@ -131,7 +157,7 @@ return function()
 
 	it("should work across line breaks", function()
 		expect(chalk.red("hello\nworld")).to.equal(
-			string.format('%shello\nworld%s', ansi16(31), ansi16(39))
+			string.format('%shello%s\n%sworld%s', ansi16(31), ansi16(39), ansi16(31), ansi16(39))
 		)
 	end)
 

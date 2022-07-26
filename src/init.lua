@@ -1,3 +1,40 @@
+-- ROBLOX NOTE: inline stringReplaceAll to keep ChalkLua as one file
+local function stringReplaceAll(string_, substring, replacer)
+	local index = string.find(string_, substring, 1, true)
+	if index == nil then
+			return string_
+	end
+	local substringLength = #substring
+	local endIndex = 1
+	local returnValue = ""
+	repeat
+			returnValue ..= string.sub(string_, endIndex, index - 1) .. substring .. replacer
+			endIndex = index + substringLength
+			index = string.find(string_, substring, endIndex, true)
+	until not (index ~= nil)
+	returnValue ..= string.sub(string_, endIndex)
+	return returnValue
+end
+
+-- ROBLOX NOTE: inline stringEncaseCRLFWithFirstIndex to keep ChalkLua as one file
+local function stringEncaseCRLFWithFirstIndex(string_, prefix, postfix, index)
+	local endIndex = 1
+	local returnValue = ""
+	repeat
+			local gotCR = string.sub(string_, index - 1, index -1) == "\r"
+			returnValue ..= string.sub(string_, endIndex, if gotCR then index - 2 else index - 1)
+				.. prefix
+				.. (if gotCR then "\r\n" else "\n")
+				.. postfix
+			endIndex = index + 1
+			index = string.find(string_, "\n", endIndex)
+	until not (index ~= nil)
+	returnValue ..= string.sub(string_, endIndex)
+	return returnValue
+end
+
+
+
 local ansiStyles = {
 	modifier = {
 		reset = {0, 0},
@@ -84,6 +121,7 @@ for groupName, group in pairs(ansiStyles) do
 end
 
 local createStyler
+local applyStyle
 
 local function compositeStyler(style, otherStyle)
 	return createStyler(
@@ -114,7 +152,7 @@ setmetatable(
 	}
 )
 
-createStyler = function(open, close)
+function createStyler(open, close)
 	local styler = {
 		open = open,
 		close = close
@@ -124,13 +162,7 @@ createStyler = function(open, close)
 		styler,
 		{
 			__call = function(self, str)
-				if str == nil or type(str) == 'string' and #str == 0 then
-					return ''
-				end
-				if Chalk.level == 0 then
-					return tostring(str)
-				end
-				return self.open .. tostring(str) .. self.close
+				return applyStyle(self, str)
 			end,
 			__concat = function(self, other)
 				return compositeStyler(self, other)
@@ -139,6 +171,37 @@ createStyler = function(open, close)
 	)
 
 	return styler
+end
+
+function applyStyle(self, str)
+	if str == nil or type(str) == 'string' and #str == 0 then
+		return ''
+	end
+	if Chalk.level == 0 then
+		return tostring(str)
+	end
+
+	local styler = self
+
+	local openAll, closeAll = styler.open, styler.close
+	if string.match(str, '\u{001B}') then
+		-- ROBLOX deviation START: no parent styles support yet
+		-- Replace any instances already present with a re-opening code
+		-- otherwise only the part of the string until said closing code
+		-- will be colored, and the rest will simply be 'plain'.
+		str = stringReplaceAll(str, styler.close, styler.open);
+		-- ROBLOX deviation END
+	end
+
+	-- We can move both next actions out of loop, because remaining actions in loop won't have
+	-- any/visible effect on parts we add here. Close the styling before a linebreak and reopen
+	-- after next line to fix a bleed issue on macOS: https://github.com/chalk/chalk/pull/92
+	local lfIndex = string.find(str, '\n');
+	if lfIndex ~= nil then
+		str = stringEncaseCRLFWithFirstIndex(str, closeAll, openAll, lfIndex);
+	end
+
+	return self.open .. tostring(str) .. self.close
 end
 
 local function noStyle()
