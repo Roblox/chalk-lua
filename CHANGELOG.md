@@ -2,6 +2,7 @@
 
 ## Not released
 
+## 0.2.0
 * bugfix: replace any instances of closing code already present with a re-opening code ([#6](https://github.com/Roblox/chalk-lua/pull/6))
 
 ## 0.1.3
