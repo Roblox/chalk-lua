@@ -10,7 +10,7 @@ A Lua port of the open source JS terminal string styling library [Chalk](https:/
 
 Add this package to your `[dependencies]` in your `rotriever.toml`.
 ```
-Chalk = "github.com/roblox/chalk-lua@0.1.1"
+Chalk = "github.com/roblox/chalk-lua@0.2.0"
 ```
 
 Run `rotrieve install` to install the package.
