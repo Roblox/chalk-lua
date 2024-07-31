@@ -12,5 +12,8 @@ license = "MIT"
 content_root = "src"
 version = "0.2.1"
 
+[config]
+registry_index = true
+
 [dev_dependencies]
 TestEZ = "github.com/roblox/testez@0.4.1"
