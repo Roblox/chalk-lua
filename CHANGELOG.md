@@ -2,6 +2,9 @@
 
 ## Not released
 
+## 0.3.0
+* Enable chalk in non-Roblox or OCALE environments. ([#20](https://github.com/Roblox/chalk-lua-internal/pull/20))
+
 ## 0.2.0
 * bugfix: replace any instances of closing code already present with a re-opening code ([#6](https://github.com/Roblox/chalk-lua-internal/pull/6))
 

@@ -116,15 +116,33 @@ local function compositeStyler(style, otherStyle)
 	return createStyler(style.open .. otherStyle.open, otherStyle.close .. style.close)
 end
 
-local function foundProcessService()
-	local success = pcall(function()
-		game:GetService("ProcessService")
+local function environmentSupported()
+	-- checks if running in a roblox environment
+	local success, RunService = pcall(function()
+		return game:GetService("RunService")
 	end)
-	return success
+	if not success then
+		return true
+	end
+
+	-- checks if running in roblox-cli
+	local success, processServiceExists = pcall(function()
+		return game:GetService("ProcessService")
+	end)
+	if success and processServiceExists then
+		return true
+	end
+
+	-- checks if running in ocale
+	if RunService:IsServer() and not RunService:IsStudio() then
+		return true
+	end
+
+	return false
 end
 
 local Chalk = { level = 2 }
-if _G.NOCOLOR or not foundProcessService() then
+if _G.NOCOLOR or not environmentSupported() then
 	Chalk.level = 0
 end
 

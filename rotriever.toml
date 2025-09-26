@@ -10,7 +10,7 @@ keywords = ["color", "terminal", "string", "style"]
 
 license = "MIT"
 content_root = "src"
-version = "0.2.2"
+version = "0.3.0"
 
 [config]
 registry_index = true
