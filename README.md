@@ -1,5 +1,8 @@
 # Chalk-Lua
 
+[![Get it on Creator Store](./.github/assets/link-creator-store.svg)](https://create.roblox.com/store/asset/16031787508/ChalkLua)
+[![Wally (external link)](./.github/assets/link-wally.svg)](https://wally.run/package/roblox/chalk-lua)
+
 A Lua port of the open source JS terminal string styling library [Chalk](https://github.com/chalk/chalk).
 
 <img src="https://cdn.jsdelivr.net/gh/chalk/ansi-styles@8261697c95bf34b6c7767e2cbe9941a851d59385/screenshot.svg" width="900">

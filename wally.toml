@@ -1,0 +1,11 @@
+[package]
+name = "roblox/chalk-lua"
+description = "A Luau port of the open source terminal string styling library."
+version = "0.3.0"
+license = "MIT"
+authors = ["Roblox <no-reply@roblox.com>"]
+realm = "shared"
+registry = "https://github.com/upliftgames/wally-index"
+repository = "https://github.com/Roblox/chalk-lua"
+
+[dependencies]
