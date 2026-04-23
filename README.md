@@ -26,11 +26,13 @@ Get [Chalk-Lua on the Creator Store](https://create.roblox.com/store/asset/16031
 
 <details>
     <summary>Internal</summary>
+
     Add this package to your `[dependencies]` in your `rotriever.toml`.
     ```
     Chalk = "github.com/roblox/chalk-lua@0.3.0"
     ```
     Run `rotrieve install` to install the package.
+    
 </details>
 
 ---
