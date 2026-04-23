@@ -22,7 +22,15 @@ Run `wally install` to install the package. See the [Wally page for `roblox/chal
 
 ### Creator Store
 
-Get [Chalk-Lua on the Creator Store](https://create.roblox.com/store/asset/16031787508/ChalkLua) and add it to your inventory, then drag it into your place in Roblox Studio (typically under `ReplicatedStorage`).
+Get [Chalk-Lua on the Creator
+Store](https://create.roblox.com/store/asset/16031787508/ChalkLua) and add it to
+your inventory, then drag it into your place in Roblox Studio (typically under
+`ReplicatedStorage`).
+
+> [!NOTE]
+> Roblox Studio's built-in Output widget does not support ANSI escape codes;
+> for coloured output support, you'll need to use to a full-featured terminal
+> emulator, for example by running your Roblox project in [rocale-cli](https://github.com/Roblox/rocale-cli).
 
 <details>
 <summary>Internal</summary>
