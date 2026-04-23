@@ -11,12 +11,35 @@ A Lua port of the open source JS terminal string styling library [Chalk](https:/
 
 ## Installation
 
+### Wally
+
+Add this package to your `[dependencies]` in your `wally.toml`.
+```toml
+Chalk = "roblox/chalk-lua@0.3.0"
+```
+
+Run `wally install` to install the package. See the [Wally page for `roblox/chalk-lua`](https://wally.run/package/roblox/chalk-lua) for available versions.
+
+### Creator Store
+
+Get [Chalk-Lua on the Creator Store](https://create.roblox.com/store/asset/16031787508/ChalkLua) and add it to your inventory, then drag it into your place in Roblox Studio (typically under `ReplicatedStorage`).
+
+<details>
+<summary>Internal</summary>
+
 Add this package to your `[dependencies]` in your `rotriever.toml`.
 ```
-Chalk = "github.com/roblox/chalk-lua@0.2.0"
+Chalk = "github.com/roblox/chalk-lua@0.3.0"
+```
+</details>
+
 ```
 
 Run `rotrieve install` to install the package.
+
+---
+
+## Usage
 
 Require it at the top of your file.
 ```lua
